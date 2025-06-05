@@ -1,0 +1,6 @@
+@GarantiaApi_HostAddress = http://localhost:5247
+
+GET {{GarantiaApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

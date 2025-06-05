@@ -6,35 +6,60 @@ namespace GarantiaApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class GarantiaController(IHttpService<Garantia> httpService) : ControllerBase
+public class GarantiaController(IService<Garantia> httpService) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> CreateGarantia(Garantia garantia)
     {
-        return await httpService.CreateAsync(garantia);
+        try
+        {
+            await httpService.CreateAsync(garantia);
+
+            return Created();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message); 
+        }
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetGarantiaById(Guid id)
     {
-        return await httpService.GetByIdAsync(id);
+        var garantia = await httpService.GetByIdAsync(id);
+
+        if (garantia == null)
+            return NotFound();
+        
+        return Ok(garantia);
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetGarantias()
+    public async Task<IActionResult> GetAllGarantias()
     {
-        return await httpService.GetAllAsync();
+        var garantias = await httpService.GetAllAsync();
+        return Ok(garantias);
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateGarantia(Guid id, Garantia garantia)
     {
-        return await httpService.UpdateAsync(id, garantia);
+        var updatedGarantia = await httpService.UpdateAsync(id, garantia);
+
+        if (updatedGarantia == null)
+            return NotFound();
+        
+        return Ok(updatedGarantia);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteGarantia(Guid id)
     {
-        return await httpService.DeleteAsync(id);
+        var success = await httpService.DeleteAsync(id);
+
+        if (!success)
+            return NotFound();
+        
+        return Ok();
     }
 }

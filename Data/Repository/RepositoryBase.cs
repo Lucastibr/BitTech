@@ -8,8 +8,8 @@ namespace Data.Repository;
 /// <typeparam name="T"></typeparam>
 public class RepositoryBase<T> : IRepository<T> where T : class
 {
-    private readonly Dictionary<Guid, T> _store = new();
-    private int _nextId = 1;
+    private readonly Dictionary<Guid?, T> _store = new();
+    private readonly Guid _nextId = Guid.NewGuid();
 
     public Task<T> CreateAsync(T entity)
     {
@@ -18,13 +18,12 @@ public class RepositoryBase<T> : IRepository<T> where T : class
         if (idProperty == null)
             throw new InvalidOperationException("A entidade deve ter ao menos um ID.");
         
-
-        idProperty.SetValue(entity, _nextId++);
-        _store[(Guid)idProperty.GetValue(entity)] = entity;
+        idProperty.SetValue(entity, _nextId);
+        _store[(Guid?)idProperty.GetValue(entity)] = entity;
         return Task.FromResult(entity);
     }
 
-    public Task<T?> GetByIdAsync(Guid id)
+    public Task<T?> GetByIdAsync(Guid? id)
     {
         _store.TryGetValue(id, out var entity);
         return Task.FromResult(entity);
@@ -50,7 +49,7 @@ public class RepositoryBase<T> : IRepository<T> where T : class
 
     }
 
-    public Task<bool> DeleteAsync(Guid id)
+    public Task<bool> DeleteAsync(Guid? id)
     {
         return Task.FromResult(_store.Remove(id));
     }

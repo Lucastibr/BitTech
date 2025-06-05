@@ -8,7 +8,7 @@ using Service.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton<IRepository<Produto>, RepositoryBase<Produto>>();
-builder.Services.AddSingleton<IHttpService<Produto>, HttpServiceBase<Produto>>();
+builder.Services.AddSingleton<IService<Produto>, ServiceBase<Produto>>();
 
 
 builder.Services.AddControllers();

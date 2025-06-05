@@ -4,29 +4,62 @@ using Service.Interfaces;
 
 namespace VendaApi.Controllers;
 
-public class VendaController(IHttpService<Venda> httpService) : ControllerBase
+[Route("api/[controller]")]
+[ApiController]
+public class VendaController(IService<Venda> httpService) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> CreateVenda(Venda venda)
     {
-        return await httpService.CreateAsync(venda);
-    }
+        try
+        {
+            await httpService.CreateAsync(venda);
 
+            return Created();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message); 
+        }
+    }
+    
     [HttpGet("{id}")]
     public async Task<IActionResult> GetVendaById(Guid id)
     {
-        return await httpService.GetByIdAsync(id);
+        var venda = await httpService.GetByIdAsync(id);
+
+        if (venda == null)
+            return NotFound();
+
+        return Ok(venda);
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetAllVendas()
+    {
+        var vendas = await httpService.GetAllAsync();
+        return Ok(vendas);
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetVendas()
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateVenda(Guid id, Venda venda)
     {
-        return await httpService.GetAllAsync();
+        var updatedVenda = await httpService.UpdateAsync(id, venda);
+
+        if (updatedVenda == null)
+            return NotFound();
+        
+        return Ok(updatedVenda);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteVenda(Guid id)
     {
-        return await httpService.DeleteAsync(id);
+        var success = await httpService.DeleteAsync(id);
+
+        if (!success)
+            return NotFound();
+        
+        return NoContent();
     }
 }

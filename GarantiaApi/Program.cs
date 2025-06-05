@@ -8,7 +8,7 @@ using Service.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton<IRepository<Garantia>, RepositoryBase<Garantia>>();
-builder.Services.AddSingleton<IHttpService<Garantia>, HttpServiceBase<Garantia>>();
+builder.Services.AddSingleton<IService<Garantia>, ServiceBase<Garantia>>();
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();

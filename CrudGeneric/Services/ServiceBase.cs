@@ -31,10 +31,25 @@ public class ServiceBase<T>(IRepository<T> repository) : IService<T> where T : c
 
     public async Task<T> UpdateAsync(Guid? id, T entity)
     {
-        var updatedEntity = await repository.UpdateAsync(entity);
+        if (id == null)
+            throw new ArgumentNullException(nameof(id));
+        
+        var domain = await repository.GetByIdAsync(id);
+
+        if (domain == null)
+            throw new Exception("Recurso não encontrado.");
+
+        foreach (var property in typeof(T).GetProperties())
+        {
+            if (property.Name == "Id") continue;
+            var newValue = property.GetValue(entity);
+            property.SetValue(domain, newValue);
+        }
+
+        var updatedEntity = await repository.UpdateAsync(domain);
         return updatedEntity;
     }
-
+    
     public async Task<bool> DeleteAsync(Guid? id)
     {
         var success = await repository.DeleteAsync(id);

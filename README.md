@@ -2,7 +2,7 @@
 
 # Desafio BitTech - Passo a Passo para Execução
 
-Este é um guia passo a passo para executar a aplicação em seu ambiente local, seja no Windows ou no Linux. O projeto foi desenvolvido com ASP.NET Core e pode ser executado facilmente após a instalação das ferramentas necessárias.
+Este é um passo a passo para executar a aplicação em seu ambiente local, seja no Windows ou no Linux. O projeto foi desenvolvido com .Net 9 e pode ser executado facilmente após a instalação das ferramentas necessárias.
 
 ## Pré-requisitos
 

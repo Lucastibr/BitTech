@@ -60,5 +60,5 @@ Antes de começar, você precisará ter as seguintes ferramentas instaladas:
 2. Clone o repositório para sua máquina local:
 
    ```bash
-   git clone https://github.com/seuusuario/seuprojeto.git
-   cd seuprojeto
+   git clone [https://github.com/seuusuario/seuprojeto.git](https://github.com/Lucastibr/BitTech)
+   cd BitTech
